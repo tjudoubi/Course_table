@@ -153,6 +153,7 @@ public class Course {
 		if(subject_index == subject.length-1){
 			return ;
 		}
+		
 //		System.out.println("do_something :"+class_index+" course_index:"+course_index+" subject_index:"+subject_index);
 		every_class[class_index].subject[course_index].copy(subject[subject_index]);
 //		add_one(class_index, course_index, subject_index);
@@ -162,7 +163,6 @@ public class Course {
 		}else{
 			every_class[class_index].map.put(subject[subject_index].name, 1);
 		}
-		
 		
 		if(check_room_same(class_index,course_index,subject_index)){
 			int a_id = 0;
@@ -183,9 +183,12 @@ public class Course {
 				classroom[a_id].booked_down[course_index] += 1; every_class[class_index].subject[course_index].classroom_id = a_id;
 			}
 		}else{
-		
 				String subject_name = subject[subject_index].name;
-				for(int i = 0;i < classroom.length;i++){
+				if(subject_name.equals("体育")&&classroom[9].booked_down[course_index]==0){
+					classroom[9].booked_down[course_index]+= 1;classroom[9].booked_up[course_index]+=1;
+					every_class[class_index].subject[course_index].classroom_id = 9;
+				}else{
+				for(int i = 0;i < classroom.length-2;i++){
 					int begin = subject[subject_index].begin_week;
 					int end = subject[subject_index].end_week;
 					if(begin == 4&&end == 19&&classroom[i].up_people>=subject[subject_index].all_people){
@@ -201,6 +204,7 @@ public class Course {
 							classroom[i].booked_down[course_index]+=1;every_class[class_index].subject[course_index].classroom_id = i;break;
 						}
 					}
+				}
 				}
 		}
 		
@@ -355,7 +359,8 @@ public class Course {
 	private static boolean check_classroom(int class_index, int course_index, int subject_index) {
 		// TODO Auto-generated method stub
 		String subject_name = subject[subject_index].name;
-		for(int i = 0;i < classroom.length;i++){
+		if(!subject_name.equals("体育")){
+		for(int i = 0;i < classroom.length-2;i++){
 			int begin = subject[subject_index].begin_week;
 			int end = subject[subject_index].end_week;
 			if(begin == 4&&end == 19&&classroom[i].up_people>=subject[subject_index].all_people){
@@ -370,6 +375,11 @@ public class Course {
 				if(classroom[i].booked_down[course_index]==0){
 					return true;
 				}
+			}
+		}
+		}else{
+			if(classroom[9].booked_down[course_index]==0&&classroom[9].booked_up[course_index]==0){
+				return true;
 			}
 		}
 		return false;
@@ -502,14 +512,15 @@ public class Course {
 	}
 	
 	public static void init_Classroom(){
-		classroom = new Classroom[20];
-		for(int i = 0;i < 20;i++){
+		classroom = new Classroom[10];
+		for(int i = 0;i < 10;i++){
 			classroom[i] = new Classroom();
 			classroom[i].id = i;
 			classroom[i].up_people = 4;
 		}
-		classroom[7].up_people = 3;
-		classroom[8].up_people = 3;
+		classroom[8].up_people = 2;/////机房
+		classroom[9].up_people = 3;/////体育馆
+		
 	}
 	
 	

@@ -8,10 +8,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 import net.sf.json.JSONObject;
 
@@ -27,7 +29,7 @@ public class Course {
 	private static Class [] every_class;
 	private static Classroom[] classroom;
 	private static Subject[] subject;
-
+	private static int a = 0;
 	
 	public Course() throws IOException{
 		
@@ -41,15 +43,15 @@ public class Course {
 		if(arrange(0,0)){
 			System.out.println("ok");
 			System.out.println("classroom 0:10 :+"+classroom[0].booked_up[10]);
-			System.out.println("subject 6:"+subject[6].all_people);
+
 		}else{
 			System.out.println("l");
 		}
 	}
 	
 	public static boolean arrange(int class_index, int course_index){
-		if(class_index == 6){
-			for(int j = 0;j < 6;j++){
+		if(class_index == 2){
+			for(int j = 0;j < 2;j++){
 				System.out.print("j:"+j);
 			for(int i = 0; i < 20;i++){
 				
@@ -469,33 +471,43 @@ public class Course {
 			dataList.add(obj);
 			}
 		
+		Subject[] subject_temp = new Subject[dataList.size()+1];
 		subject = new Subject[dataList.size()+1];
-		for(int i = 0 ; i < subject.length;i++){
+		for(int i = 0 ; i < subject_temp.length;i++){
+			subject_temp[i] = new Subject();
 			subject[i] = new Subject();
 		}
 		for(int i = 0 ;i < dataList.size();i++){
 			Object[] obj = dataList.get(i);
-			subject[i].name = obj[0].toString();
-			subject[i].grade = Integer.valueOf(obj[1].toString());
+			subject_temp[i].name = obj[0].toString();
+			subject_temp[i].grade = Integer.valueOf(obj[1].toString());
 			
 			if(obj[2].toString().equals("null"))
-				subject[i].ban_time = null;
+				subject_temp[i].ban_time = null;
 			else
-				subject[i].ban_time = Integer.valueOf(obj[2].toString());
+				subject_temp[i].ban_time = Integer.valueOf(obj[2].toString());
 			
-			subject[i].begin_week = Integer.valueOf(obj[3].toString());
-			subject[i].end_week = Integer.valueOf(obj[4].toString());
+			subject_temp[i].begin_week = Integer.valueOf(obj[3].toString());
+			subject_temp[i].end_week = Integer.valueOf(obj[4].toString());
 			
 			if(obj[5].toString().equals("null"))
-				subject[i].classroom_id = null;
+				subject_temp[i].classroom_id = null;
 			else
-				subject[i].classroom_id = Integer.valueOf(obj[5].toString());
-			subject[i].teacher_name = obj[6].toString();
-			subject[i].all_people = Integer.valueOf(obj[7].toString());
-			subject[i].times = Integer.valueOf(obj[8].toString());
-			subject[i].now_people = Integer.valueOf(obj[9].toString());
+				subject_temp[i].classroom_id = Integer.valueOf(obj[5].toString());
+			subject_temp[i].teacher_name = obj[6].toString();
+			subject_temp[i].all_people = Integer.valueOf(obj[7].toString());
+			subject_temp[i].times = Integer.valueOf(obj[8].toString());
+			subject_temp[i].now_people = Integer.valueOf(obj[9].toString());
 			
 		}
+		PriorityQueue<Subject> q=new PriorityQueue<Subject>(dataList.size(),cp);
+		for(int i = 0;i < dataList.size();i++){
+			q.add(subject_temp[i]);
+		}
+		for(int i = 0;i < dataList.size();i++){
+			subject[i] = q.poll();
+		}
+		
 		print();
 		
 		
@@ -503,7 +515,7 @@ public class Course {
 	
 	
 	public static void init_Class(){
-		every_class = new Class[6];
+		every_class = new Class[2];
 		for(int i = 0;i < every_class.length;i++){
 			every_class[i] = new Class();
 			if(i < 4){
@@ -532,4 +544,24 @@ public class Course {
 			System.out.println("name:"+subject[i].name+" grade"+subject[i].grade+" ban_time:"+subject[i].ban_time+" begin_week:"+subject[i].begin_week+" end_week:"+subject[i].end_week+" classroom_id:"+subject[i].classroom_id+" teacher_name:"+subject[i].teacher_name+" all_people:"+subject[i].all_people+" times:"+subject[i].times);
 		}
 	}
+	
+	
+	static Comparator<Subject> cp=new Comparator<Subject>(){
+	       public int compare(Subject s1, Subject s2){
+	           int num1=s1.all_people;
+	           int num2=s2.all_people;
+	           if(num1 < num2)  
+	           {  
+	               return 1;  
+	           }  
+	           else if(num1>num2)  
+	           {  
+	               return -1;  
+	           }  
+	           else  
+	           {  
+	               return 0;  
+	           }  
+	       }
+	   };
 }

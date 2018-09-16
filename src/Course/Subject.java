@@ -1,6 +1,6 @@
 package Course;
 
-public class Subject {
+public class Subject{
 	public String name;
 	public int grade;
 	public Integer ban_time;

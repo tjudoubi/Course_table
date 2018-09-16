@@ -103,11 +103,15 @@ public class Course {
 	
 	private static boolean match_all_subject(){
 		for(int i = 0;i < every_class.length;i++){
-			for(int j = 0;j < subject.length;j++){
+			for(int j = 0;j < subject.length-1;j++){//////注意，j 不能 < subject.length,一定要小于subject.length-1,因为最后一个subject永远匹配不上
+				if((every_class[i].grade == subject[j].grade||subject[j].grade==0)&&!every_class[i].map.containsKey(subject[j].name)){
+					return false;
+				}
 				String str = subject[j].name;
 				int a = subject[j].times;
 				HashMap<String,Integer> map = every_class[i].map;
 				Iterator iter = map.entrySet().iterator();
+				
 				while (iter.hasNext()) {
 					Map.Entry entry = (Map.Entry) iter.next();
 					Object key = entry.getKey();
@@ -296,7 +300,6 @@ public class Course {
 				int end = subject[subject_index].end_week;
 				if(begin == 4&&end == 19){
 					if(classroom[i].booked_down[course_index]==subject[subject_index].all_people||classroom[i].booked_up[course_index]==subject[subject_index].all_people){
-						System.out.println("class_index:"+class_index+ ";"+subject_index);
 						return false;
 					}
 				}else if(begin == 4&&end == 11){
@@ -518,7 +521,7 @@ public class Course {
 			classroom[i].id = i;
 			classroom[i].up_people = 4;
 		}
-		classroom[8].up_people = 2;/////机房
+		classroom[8].up_people = 3;/////机房
 		classroom[9].up_people = 3;/////体育馆
 		
 	}

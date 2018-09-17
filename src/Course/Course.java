@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import javax.swing.JFrame;
+
 import net.sf.json.JSONObject;
 
 //软件学院一共3个年级需要排课，大一4个班，大二2个班
@@ -30,6 +32,7 @@ public class Course {
 	private static Classroom[] classroom;
 	private static Subject[] subject;
 	private static int a = 0;
+	private static String[] home = { "101","102","103","104","105","106","107","108","109","体育馆"};
 	
 	public Course() throws IOException{
 		
@@ -43,15 +46,40 @@ public class Course {
 		if(arrange(0,0)){
 			System.out.println("ok");
 			System.out.println("classroom 0:10 :+"+classroom[0].booked_up[10]);
-
+			table[] tab = new table[every_class.length];
+			for(int i = 0;i < every_class.length;i++){
+				init_table(tab,i);
+			}
+			for(int i = 0; i < every_class.length;i++){
+				tab[i].setVisible(true);
+			}
 		}else{
 			System.out.println("l");
 		}
 	}
 	
+	private static void init_table(table[] tab, int class_index) {
+		String[] columnNames = {"周一","周二","周三","周四","周五"};
+				Object[][] obj = new Object[4][5];
+		for(int i = 0;i < 20;i++){
+			int a = i/4;
+			int b = i%4;
+			Subject sub = every_class[class_index].subject[i];
+			if(!sub.name.equals("")){
+				obj[b][a] = sub.name + "   "+ sub.teacher_name + "   " + home[sub.classroom_id];
+			}else{
+				obj[b][a] = " ";
+			}
+		}
+		tab[class_index] = new table(columnNames,obj);
+		// TODO Auto-generated method stub
+		
+	}
+
 	public static boolean arrange(int class_index, int course_index){
-		if(class_index == 2){
-			for(int j = 0;j < 2;j++){
+		if(class_index == 6){
+			System.out.println(a);
+			for(int j = 0;j < 6;j++){
 				System.out.print("j:"+j);
 			for(int i = 0; i < 20;i++){
 				
@@ -61,6 +89,7 @@ public class Course {
 			}
 			System.out.println();
 			}
+			a++;
 //			for(int i = 0;i < 4;i++){
 //				System.out.print(" class_index:"+i);
 //				HashMap<String,Integer> map = every_class[i].map;
@@ -413,13 +442,28 @@ public class Course {
 		// TODO Auto-generated method stub
 		int day = course_index/4;
 		int begin_index = day*4;
-		for(int i = begin_index;i < course_index;i++){
-			if(every_class[class_index].subject[i].name.equals(subject[subject_index].name)){
-				return false;
+		if(!subject[subject_index].name.equals("工图")){
+			
+			for(int i = begin_index;i < course_index;i++){
+				if(every_class[class_index].subject[i].name.equals(subject[subject_index].name)){
+					return false;
+				}
+			}
+		
+			return true;
+		}else{
+			if(!every_class[class_index].map.containsKey("工图")||every_class[class_index].map.get("工图")==0){
+				return true;
+			}else{
+				for(int i = begin_index;i < course_index;i++){
+					if(every_class[class_index].subject[i].name.equals(subject[subject_index].name)){
+						return true;
+					}
+				}
+		
+			return false;
 			}
 		}
-		
-		return true;
 	}
 
 	private static void init_subject() throws IOException {
@@ -515,7 +559,7 @@ public class Course {
 	
 	
 	public static void init_Class(){
-		every_class = new Class[2];
+		every_class = new Class[6];
 		for(int i = 0;i < every_class.length;i++){
 			every_class[i] = new Class();
 			if(i < 4){

@@ -50,7 +50,7 @@ public class Course {
 			for(int i = 0;i < every_class.length;i++){
 				init_table(tab,i);
 			}
-			for(int i = 0; i < every_class.length;i++){
+			for(int i = every_class.length-1; i >=0;i--){
 				tab[i].setVisible(true);
 			}
 		}else{
@@ -71,25 +71,25 @@ public class Course {
 				obj[b][a] = " ";
 			}
 		}
-		tab[class_index] = new table(columnNames,obj);
+		tab[class_index] = new table(columnNames,obj,every_class[class_index].grade,class_index);
 		// TODO Auto-generated method stub
 		
 	}
 
 	public static boolean arrange(int class_index, int course_index){
 		if(class_index == 6){
-			System.out.println(a);
-			for(int j = 0;j < 6;j++){
-				System.out.print("j:"+j);
-			for(int i = 0; i < 20;i++){
-				
-				if(!every_class[j].subject[i].name.equals(""))
-				System.out.print(" "+i+":"+every_class[j].subject[i].name+" "+every_class[j].subject[i].classroom_id);
-				
-			}
-			System.out.println();
-			}
-			a++;
+//			System.out.println(a);
+//			for(int j = 0;j < 6;j++){
+//				System.out.print("j:"+j);
+//			for(int i = 0; i < 20;i++){
+//				
+//				if(!every_class[j].subject[i].name.equals(""))
+//				System.out.print(" "+i+":"+every_class[j].subject[i].name+" "+every_class[j].subject[i].classroom_id);
+//				
+//			}
+//			System.out.println();
+//			}
+//			a++;
 //			for(int i = 0;i < 4;i++){
 //				System.out.print(" class_index:"+i);
 //				HashMap<String,Integer> map = every_class[i].map;

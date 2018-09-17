@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.JTable;
 
 public class table extends JFrame {
@@ -40,6 +41,7 @@ public class table extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0,0));
+		contentPane.setBorder(new TitledBorder("Flow Layout"));
 		setContentPane(contentPane);
 		
 		table = new JTable();
@@ -47,11 +49,11 @@ public class table extends JFrame {
 		contentPane.add(table);
 	}
 
-	public table(String[] columnNames, Object[][] obj) {
+	public table(String[] columnNames, Object[][] obj,int grade,int class_index) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 875, 163);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBorder(new TitledBorder("Grade "+ grade +" Class "+(class_index%4+1)));
 		contentPane.setLayout(new BorderLayout(0,0));
 		setContentPane(contentPane);
 		
